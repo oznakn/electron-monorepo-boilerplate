@@ -1,0 +1,59 @@
+{
+    "name": "example",
+    "version": "0.0.0-local",
+    "author": "Example Author",
+    "main": "./dist/main/index.js",
+    "private": true,
+    "scripts": {
+        "build": "cross-env NODE_ENV=production webpack",
+        "build:watch": "cross-env NODE_ENV=development webpack serve",
+        "start:main": "node dist/main.js",
+        "start:renderer": "node dist/renderer.js",
+        "clean": "rimraf packages/*/dist dist build/code build/output",
+        "clean:modules": "yarn clean && rimraf packages/*/node_modules node_modules",
+        "package": "zx build/package.mjs"
+    },
+    "devDependencies": {
+        "cross-env": "^7.0.3",
+        "css-loader": "^6.7.1",
+        "electron": "^21.2.0",
+        "electron-builder": "^23.6.0",
+        "electron-notarize": "^1.2.2",
+        "electron-rebuild": "^3.2.9",
+        "html-webpack-plugin": "^5.5.0",
+        "rimraf": "^3.0.2",
+        "style-loader": "^3.3.1",
+        "ts-loader": "^9.4.1",
+        "typescript": "^4.8.4",
+        "webpack": "^5.74.0",
+        "webpack-cli": "^4.10.0",
+        "webpack-dev-server": "^4.11.1",
+        "zx": "^7.1.1"
+    },
+    "workspaces": [
+        "packages/*"
+    ],
+    "build": {
+        "appId": "com.example.test",
+        "productName": "Example Electron App",
+        "copyright": "Copyright © 2022 Example",
+        "asar": true,
+        "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
+        "afterSign": "build/notarize.js",
+        "directories": {
+            "buildResources": "assets/build-assets",
+            "app": "./build/code",
+            "output": "./build/output"
+        },
+        "mac": {
+            "hardenedRuntime": true,
+            "gatekeeperAssess": false,
+            "entitlements": "build/entitlements.mac.plist",
+            "entitlementsInherit": "build/entitlements.mac.plist"
+        },
+        "nsis": {
+            "allowToChangeInstallationDirectory": true,
+            "oneClick": false
+        }
+    }
+}
